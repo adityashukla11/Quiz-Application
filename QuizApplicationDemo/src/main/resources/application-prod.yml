@@ -1,0 +1,14 @@
+spring:
+ datasource:
+  url: jdbc:mysql://localhost:3306/quizapp_prod
+  username: quizapp_prod_user
+  password: root
+  platform: mysql
+  
+ jpa:
+  hibernate:
+    ddl-auto: validate
+  database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  database: mysql
+  show-sql: false
+  
