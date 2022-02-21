@@ -1,15 +1,18 @@
 package com.quizapp.com.loader;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 
-import javax.transaction.Transactional;
-
-import org.slf4j.Logger;
+import com.quizapp.com.security.model.Role;
+import com.quizapp.com.security.model.User;
+import com.quizapp.com.security.model.UserRole;
+import com.quizapp.com.security.usermanagement.repository.RolesRepository;
+import com.quizapp.com.security.usermanagement.repository.UserRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.quizapp.com.domain.Option;
@@ -29,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-@Profile({"dev","prod"})
+@Profile({"dev","default"})
 public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 
 	private final QuizRepository quizRepository;
@@ -37,16 +40,23 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 	private final TopicRepository topicRepository;
 	private final QuestionRepository questionRepository;
 	private final StudentQuizRepository studentQuizRepository;
+	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final RolesRepository roleRepository;
 	
 	
 	public DataLoader(QuizRepository quizRepository, StudentRepository studentRepository,
-			TopicRepository topicRepository, QuestionRepository questionRepository,
-			StudentQuizRepository studentQuizRepository) {
+										TopicRepository topicRepository, QuestionRepository questionRepository,
+										StudentQuizRepository studentQuizRepository, UserRepository userRepository,
+										PasswordEncoder passwordEncoder, RolesRepository roleRepository) {
 		this.quizRepository = quizRepository;
 		this.studentRepository = studentRepository;
 		this.topicRepository = topicRepository;
 		this.questionRepository = questionRepository;
 		this.studentQuizRepository = studentQuizRepository;
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.roleRepository = roleRepository;
 	}
 
 	@Override
@@ -56,7 +66,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 		loadData();
 		
 	}
-	
+
 	 void loadData()
 	 {
 		 Topic cricketTopic = new Topic();
@@ -93,10 +103,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 	
 		 studentRepository.save(adityaStudent);
 		 studentRepository.save(mehulStudent);
-		 
-		
-		 
-	
+
 		 
 		 Question questionCricket1 = new Question();
 		 questionCricket1.setDescription("Who won the first IPL ?");
@@ -162,6 +169,23 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 	
 		 quizCricket.getStudentquiz().add(mehulQuiz);
 		 quizCricket.getStudentquiz().add(adityaQuiz);
+
+		 UserRole teacherRole = UserRole.builder().role(Role.QUIZ_TEACHER).build();
+		 UserRole studentRole = UserRole.builder().role(Role.QUIZ_STUDENT).build();
+
+		 User user1 = User.builder().email("abc@gmail.com")
+						 .password(passwordEncoder.encode("Password1")).roles(new HashSet<>(Arrays.asList(teacherRole)))
+						 .isAccountNonExpired(true).isAccountNonLocked(true).isCredentialNonExpired(true).isEnabled(true).build();
+
+		 User user2 = User.builder().email("xyz@gmail.com")
+						 .password(passwordEncoder.encode("Password1")).roles(new HashSet<>(Arrays.asList(studentRole)))
+						 .isAccountNonExpired(true).isAccountNonLocked(true).isCredentialNonExpired(true).isEnabled(true).build();
+
+		 roleRepository.save(studentRole);
+		 roleRepository.save(teacherRole);
+		 userRepository.save(user1);
+		 userRepository.save(user2);
+
 		 
 	 }
 	

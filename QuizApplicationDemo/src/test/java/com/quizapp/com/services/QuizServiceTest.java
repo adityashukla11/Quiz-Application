@@ -279,13 +279,13 @@ public class QuizServiceTest {
 
 	}
 
-	@DisplayName("It should delete a quiz")
-	@Test
-	void itShouldDeleteQuiz() {
-		Long id = 1L;
-		underTest.deleteQuiz(id);
-		verify(quizRepository).deleteById(id);
-	}
+//	@DisplayName("It should delete a quiz")
+//	@Test
+//	void itShouldDeleteQuiz() {
+//		Long id = 1L;
+//		underTest.deleteQuiz(id);
+//		verify(quizRepository).deleteById(id);
+//	}
 
 	@DisplayName("It should get all registered student from a quiz")
 	@Test

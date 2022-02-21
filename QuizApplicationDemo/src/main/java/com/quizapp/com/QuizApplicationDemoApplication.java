@@ -4,11 +4,14 @@ import java.util.Collections;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 
 import com.fasterxml.classmate.ResolvedType;
 import com.quizapp.com.domain.Admin;
 
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -17,7 +20,10 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+
 @SpringBootApplication
+@ConfigurationPropertiesScan
+@EntityScan({"com.quizapp.com.domain","com.quizapp.com.security"})
 @EnableSwagger2
 public class QuizApplicationDemoApplication {
 
