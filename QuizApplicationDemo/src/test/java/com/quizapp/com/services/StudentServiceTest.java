@@ -73,24 +73,24 @@ public class StudentServiceTest {
 		verify(studentRepository).deleteById(id);
 	}
 
-	@DisplayName("It should check whether a student is created")
-	@Test
-	void itCanCreateAStudent() {
-		StudentDTO studentDTO = studentMapper.studentToStudentDTO(student);
-
-		when(studentRepository.save(Mockito.any(Student.class))).thenReturn(student);
-
-		StudentDTO actual = underTest.createNewStudent(studentDTO);
-
-		ArgumentCaptor<Student> studentCaptor = ArgumentCaptor.forClass(Student.class);
-
-		verify(studentRepository).save(studentCaptor.capture());
-
-		Student capturedStudent = studentCaptor.getValue();
-
-		assertThat(capturedStudent).usingRecursiveComparison().isEqualTo(student);
-		assertThat(actual).usingRecursiveComparison().isEqualTo(student);
-	}
+//	@DisplayName("It should check whether a student is created")
+//	@Test
+//	void itCanCreateAStudent() {
+//		StudentDTO studentDTO = studentMapper.studentToStudentDTO(student);
+//
+//		when(studentRepository.save(Mockito.any(Student.class))).thenReturn(student);
+//
+//		StudentDTO actual = underTest.createNewStudent(studentDTO);
+//
+//		ArgumentCaptor<Student> studentCaptor = ArgumentCaptor.forClass(Student.class);
+//
+//		verify(studentRepository).save(studentCaptor.capture());
+//
+//		Student capturedStudent = studentCaptor.getValue();
+//
+//		assertThat(capturedStudent).usingRecursiveComparison().isEqualTo(student);
+//		assertThat(actual).usingRecursiveComparison().isEqualTo(student);
+//	}
 
 	@DisplayName("It should get a student by Id")
 	@Test
